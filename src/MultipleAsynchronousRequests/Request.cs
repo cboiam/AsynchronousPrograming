@@ -13,7 +13,7 @@ namespace MultipleAsynchronousRequests
         static Request()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci/");
+            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci");
         }
 
         public static async Task ExecuteAsync(List<int> fibonacciNumbers)

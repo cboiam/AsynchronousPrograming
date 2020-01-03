@@ -11,16 +11,16 @@ namespace ParallelProcessing
         static ParallelExecution()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci/");
+            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci");
         }
 
         public static ParallelResponse Execute()
         {
-            var request1 = client.GetAsync("30").Result;
-            var request2 = client.GetAsync("4").Result;
-            var request3 = client.GetAsync("33").Result;
-            var request4 = client.GetAsync("1").Result;
-            var request5 = client.GetAsync("8").Result;
+            var request1 = client.GetAsync("/30").Result;
+            var request2 = client.GetAsync("/4").Result;
+            var request3 = client.GetAsync("/33").Result;
+            var request4 = client.GetAsync("/1").Result;
+            var request5 = client.GetAsync("/8").Result;
 
             var request1Response = request1.Content.ReadAsStringAsync().Result;
             var request2Response = request2.Content.ReadAsStringAsync().Result;
@@ -40,11 +40,11 @@ namespace ParallelProcessing
 
         public static async Task<ParallelResponse> ExecuteAsync()
         {
-            var request1 = client.GetAsync("30");
-            var request2 = client.GetAsync("4");
-            var request3 = client.GetAsync("33");
-            var request4 = client.GetAsync("1");
-            var request5 = client.GetAsync("8");
+            var request1 = client.GetAsync("/30");
+            var request2 = client.GetAsync("/4");
+            var request3 = client.GetAsync("/33");
+            var request4 = client.GetAsync("/1");
+            var request5 = client.GetAsync("/8");
 
             return new ParallelResponse
             {

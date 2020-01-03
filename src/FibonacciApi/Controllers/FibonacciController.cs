@@ -8,6 +8,13 @@ namespace FibonacciApi.Controllers
     [ApiController]
     public class FibonacciController : ControllerBase
     {
+        [HttpGet()]
+        public async Task<ActionResult> Get() 
+        {
+            await Task.Delay(2000);
+            return Ok();
+        }
+
         [HttpGet("{sequenceNumber}")]
         public async Task<ActionResult<int>> Get(int sequenceNumber) =>
             await sequenceNumber.GetNumberInSequenceAsync();

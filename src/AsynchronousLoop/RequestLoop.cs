@@ -13,7 +13,7 @@ namespace AsynchronousLoop
         static RequestLoop()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci/");
+            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci");
         }
 
         public static void ExecuteLoop(List<int> fibonacciNumbers)
@@ -22,7 +22,7 @@ namespace AsynchronousLoop
             {
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
-                var fibonacciResponse = client.GetAsync(number.ToString()).Result;
+                var fibonacciResponse = client.GetAsync("/" + number.ToString()).Result;
                 var fibonacci = fibonacciResponse.Content.ReadAsStringAsync().Result;
                 stopWatch.Stop();
 
@@ -36,7 +36,7 @@ namespace AsynchronousLoop
             {
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
-                var fibonacciResponse = client.GetAsync(number.ToString()).Result;
+                var fibonacciResponse = client.GetAsync("/" + number.ToString()).Result;
                 var fibonacci = fibonacciResponse.Content.ReadAsStringAsync().Result;
                 stopWatch.Stop();
 
@@ -52,7 +52,7 @@ namespace AsynchronousLoop
             {
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
-                tasks.Add(client.GetAsync(number.ToString()).ContinueWith(async response =>
+                tasks.Add(client.GetAsync("/" + number.ToString()).ContinueWith(async response =>
                 {
                     var fibonacci = (await response).Content.ReadAsStringAsync();
                     stopWatch.Stop();
@@ -69,7 +69,7 @@ namespace AsynchronousLoop
             {
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
-                client.GetAsync(number.ToString()).ContinueWith(async response =>
+                client.GetAsync("/" + number.ToString()).ContinueWith(async response =>
                 {
                     var fibonacci = (await response).Content.ReadAsStringAsync();
                     stopWatch.Stop();
