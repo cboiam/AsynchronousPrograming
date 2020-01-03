@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,22 +16,17 @@ namespace MultipleAsynchronousRequests
             client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci/");
         }
 
-        public static void ExecuteAsync(List<int> fibonacciNumbers)
+        public static async Task ExecuteAsync(List<int> fibonacciNumbers)
         {
-            var tasks = new List<Task>();
-
-            foreach (int number in fibonacciNumbers)
-            {
-                bool finished = false;
-                tasks.Add(client.GetAsync(number.ToString()).ContinueWith(async response =>
+            IEnumerable<Task<KeyValuePair<int, int>>> tasks = fibonacciNumbers.Select(number => client.GetAsync(number.ToString()).ContinueWith((response) =>
                 {
-                    var fibonacci = (await response).Content.ReadAsStringAsync();
-                    finished = true;
-                    Console.WriteLine($"fibonacci in sequence {number} has the result {await fibonacci}");
-                }));
+                    var fibonacci = response.Result.Content.ReadAsStringAsync();
+                    return new KeyValuePair<int, int>(number, int.Parse(fibonacci.Result));
+                })
+            );
 
-                if (finished) return;
-            }
+            var result = await Task.WhenAny(tasks);
+            Console.WriteLine($"fibonacci in sequence {(await result).Key} has the result {(await result).Value}");
         }
     }
 }
