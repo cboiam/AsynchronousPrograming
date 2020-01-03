@@ -12,7 +12,7 @@ namespace MultipleAsynchronousRequests
         static Request()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci/");
+            client.BaseAddress = new Uri("http://localhost:5000/api/fibonacci");
         }
 
         public static void ExecuteAsync(List<int> fibonacciNumbers)
@@ -22,7 +22,7 @@ namespace MultipleAsynchronousRequests
             foreach (int number in fibonacciNumbers)
             {
                 bool finished = false;
-                tasks.Add(client.GetAsync(number.ToString()).ContinueWith(async response =>
+                tasks.Add(client.GetAsync("/" + number.ToString()).ContinueWith(async response =>
                 {
                     var fibonacci = (await response).Content.ReadAsStringAsync();
                     finished = true;
